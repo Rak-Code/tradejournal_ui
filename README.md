@@ -74,7 +74,9 @@ A professional trading journal application built with Next.js, TypeScript, and R
 - **Date Handling**: date-fns
 
 ### Backend Integration
-- RESTful API calls to `http://localhost:8080/api`
+- RESTful API calls (configurable via environment variable)
+- Production: `https://backend-tkiz.onrender.com/api`
+- Development: `http://localhost:8080/api`
 - JWT token-based authentication
 - Image upload support
 - Comprehensive error handling
@@ -84,7 +86,7 @@ A professional trading journal application built with Next.js, TypeScript, and R
 ### Prerequisites
 - Node.js 18+
 - pnpm (or npm/yarn)
-- Running backend server at `http://localhost:8080`
+- Backend server (production: `https://backend-tkiz.onrender.com` or local: `http://localhost:8080`)
 
 ### Installation
 
@@ -92,11 +94,14 @@ A professional trading journal application built with Next.js, TypeScript, and R
 # Install dependencies
 pnpm install
 
+# Copy environment file (already configured for production)
+# .env.local is already set to use production backend
+
 # Start development server
 pnpm dev
 ```
 
-The application will be available at `http://localhost:3000`
+The application will be available at `http://localhost:3000` and will connect to the production backend.
 
 ### Login Credentials
 ```
@@ -223,11 +228,19 @@ The application connects to a backend API at `http://localhost:8080/api` with th
 
 ## Environment Variables
 
-Currently configured to use `http://localhost:8080` as the API base URL. To change:
+Create a `.env.local` file in the frontend directory:
 
-Update `/lib/api-client.ts`:
+```env
+# Production backend (default)
+NEXT_PUBLIC_API_URL=https://backend-tkiz.onrender.com/api
+
+# Or for local development
+# NEXT_PUBLIC_API_URL=http://localhost:8080/api
+```
+
+The API client in `/lib/api-client.ts` automatically uses this environment variable:
 ```typescript
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
 ```
 
 ## Deployment
@@ -244,8 +257,10 @@ vercel deploy
 ### Environment Variables for Production
 Set in Vercel project settings:
 ```
-NEXT_PUBLIC_API_URL=https://api.yourdomain.com
+NEXT_PUBLIC_API_URL=https://backend-tkiz.onrender.com/api
 ```
+
+Note: Backend CORS is already configured to accept requests from `https://*.vercel.app`
 
 ## Development Tips
 

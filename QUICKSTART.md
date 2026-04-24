@@ -3,17 +3,18 @@
 ## 🚀 Get Started in 30 Seconds
 
 ### Prerequisites
-- Backend running at `http://localhost:8080`
 - Node.js 18+ installed
 - pnpm installed
+- Backend is running at `https://backend-tkiz.onrender.com` (production) or `http://localhost:8080` (local)
 
 ### Step 1: Start the Development Server
 ```bash
-cd /vercel/share/v0-project
+cd frontend
+pnpm install
 pnpm dev
 ```
 
-The application will be available at `http://localhost:3000`
+The application will be available at `http://localhost:3000` and will connect to the production backend by default.
 
 ### Step 2: Login
 Open http://localhost:3000 and use these credentials:
@@ -63,9 +64,19 @@ Customize:
 - Notification settings
 - Email preferences
 
-## 🔌 Backend API Requirements
+## 🔌 Backend API Configuration
 
-Your backend at `http://localhost:8080` should provide:
+The frontend is configured to use the production backend:
+```
+https://backend-tkiz.onrender.com/api
+```
+
+To switch to local backend, update `.env.local`:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8080/api
+```
+
+Your backend should provide:
 
 ### 1. Authentication
 ```
@@ -134,9 +145,11 @@ pnpm lint
 ## 🐛 Troubleshooting
 
 ### "Cannot connect to API"
-- Check backend is running at `http://localhost:8080`
+- Production backend: Check `https://backend-tkiz.onrender.com/api/health`
+- Local backend: Check `http://localhost:8080` is running
 - Check CORS is enabled in backend
 - Check network tab in browser DevTools
+- Note: Render free tier may sleep after 15 min inactivity (first request takes ~30s)
 
 ### "Login failed"
 - Verify credentials: `rakesh` / `ChangeMe@123`
